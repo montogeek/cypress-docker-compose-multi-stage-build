@@ -1,0 +1,12 @@
+FROM cypress/base:10
+
+COPY /app/package.json /tmp
+COPY /app/package-lock.json /tmp
+
+RUN cd /tmp && npm ci
+RUN mkdir -p /app && cp -a /tmp/node_modules /app
+
+WORKDIR /app
+COPY . /app
+
+CMD ["./node_modules/.bin/cypress", "verify"]
